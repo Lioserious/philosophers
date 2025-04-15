@@ -6,7 +6,7 @@
 #    By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 16:02:52 by lihrig            #+#    #+#              #
-#    Updated: 2025/04/14 16:26:58 by lihrig           ###   ########.fr        #
+#    Updated: 2025/04/15 15:24:28 by lihrig           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 ################################################################################
 # Compilers and flags
 CC = cc
-CC_FLAGS = -Wall -Werror -Wextra
+CC_FLAGS = -Wall -Werror -Wextra -pthread
 RM = rm -rf
 # Targets
 NAME = program
