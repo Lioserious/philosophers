@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/16 17:29:41 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/18 13:08:40 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,3 +40,7 @@ typedef struct s_data
     pthread_mutex_t dead_mutex;      // Mutex für den Zugriff auf is_dead
 
 }				t_data;
+
+t_data *init_data(int argc, char **argv);
+t_philosophers *init_philosophers(t_data *data);
+
