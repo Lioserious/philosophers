@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:18:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/16 18:17:54 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/18 11:13:12 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ t_data *init_data(int argc, char **argv)
 	data->time_to_die = atoi(argv[2]);
 	data->time_to_eat = atoi(argv[3]);
 	data->time_to_sleep = atoi(argv[4]);
-	// data->forced_to_eat = atoi(argv[5]); hier muss man nochmal ran vlt mit if statement
+	if (argc == 6)
+    data->forced_to_eat = atoi(argv[5]);
+	else
+    data->forced_to_eat = 0;
 	data->is_dead = 0;
 	data->start_time = get_current_time();
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nbr_philosophers);
