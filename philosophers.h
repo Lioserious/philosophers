@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/22 15:37:16 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/22 17:48:44 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_data
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	int				time_to_think;
 	int				forced_to_eat;
 	long			start_time;
 	int				is_dead;
@@ -45,4 +46,5 @@ typedef struct s_data
 t_data *init_data(int argc, char **argv);
 t_philosophers *init_philosophers(t_data *data);
 long get_current_time(void);
+void	print_status(t_philosophers *philo, char *status);
 

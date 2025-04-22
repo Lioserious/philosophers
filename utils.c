@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:18:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/22 16:44:59 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/22 17:52:53 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_data	*init_data(int argc, char **argv)
 	data->time_to_die = atoi(argv[2]);
 	data->time_to_eat = atoi(argv[3]);
 	data->time_to_sleep = atoi(argv[4]);
+	data->time_to_think = 100;
 	if (argc == 6)
 		data->forced_to_eat = atoi(argv[5]);
 	else
@@ -87,6 +88,13 @@ void	*philosopher_routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&data->dead_mutex);
+		print_status(philosophers, "is thinking");
+		usleep(data->time_to_think * 1000);
+		if(philosophers->id % 2 == 0)
+		{
+
+		}
+		
 	}
 }
 
@@ -106,6 +114,5 @@ void	print_status(t_philosophers *philo, char *status)
 
 		printf("%ld %d %s\n", elapsed_time, philo->id + 1, status);
 	}
-
 	pthread_mutex_unlock(&data->write_mutex);
 }
