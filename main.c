@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/22 14:49:43 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/22 18:18:12 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,31 +36,36 @@ void free_data(t_data *data)
 	}
 	pthread_mutex_destroy(&data->write_mutex);
 	pthread_mutex_destroy(&data->dead_mutex);
-	memset(data, 0, sizeof(t_data));
+	ft_memset(data, 0, sizeof(t_data));
 	free(data);
 }
-void free_philisophers(t_philosophers *philosophers)
+void free_philosophers(t_philosophers *philosophers)
 {
 	if(!philosophers)
 		return;
-	memset(philosophers, 0, sizeof(philosophers));
+	ft_memset(philosophers, 0, sizeof(philosophers));
 	free(philosophers);
 }
 
-int main (int argc, char* argv[])
+int main(int argc, char* argv[])
 {
-	t_data *data;
-	t_philosophers *philosophers;
-	if(argc < 5 || argc > 6)
-	{
-		data = init_data(argc, argv);
-		if(!data)
-			return(free_data(data), 1);
-		philosophers = init_philosophers(data);
-		if(!philosophers)
-			return(free_data(data),free_philisophers(philosophers), 1);
-	}
-	free_philisophers(philosophers);
-	free_data(data);
-	print_instructions;
+    t_data *data;
+    t_philosophers *philosophers;
+    
+	data = NULL;
+	philosophers = NULL;
+    if(argc < 5 || argc > 6)
+        return (print_instructions(), 1);
+    data = init_data(argc, argv);
+    if(!data)
+        return 1;      
+    philosophers = init_philosophers(data);
+    if(!philosophers)
+    {
+        free_data(data);
+        return 1;
+    }
+    free_philosophers(philosophers);  // Note: corrected spelling from free_philisophers
+    free_data(data);
+    return 0;
 }
