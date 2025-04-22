@@ -6,12 +6,13 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/18 13:08:40 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/22 15:37:16 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 typedef struct s_philosophers
 {
@@ -43,4 +44,5 @@ typedef struct s_data
 
 t_data *init_data(int argc, char **argv);
 t_philosophers *init_philosophers(t_data *data);
+long get_current_time(void);
 
