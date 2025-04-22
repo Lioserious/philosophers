@@ -6,11 +6,13 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/22 17:48:44 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/22 18:18:55 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 #include <pthread.h>
 #include <sys/time.h>
 
@@ -47,4 +49,5 @@ t_data *init_data(int argc, char **argv);
 t_philosophers *init_philosophers(t_data *data);
 long get_current_time(void);
 void	print_status(t_philosophers *philo, char *status);
+void	*ft_memset(void *ptr, int value, size_t nbr);
 
