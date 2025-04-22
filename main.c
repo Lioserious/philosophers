@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/18 13:24:29 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/22 13:46:41 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ int main (int argc, char* argv[])
 	{
 		data = init_data(argc, argv);
 		if(!data)
-			return(1);
+			return(free_data(data), 1);
 		philosophers = init_philosophers(data);
-		if()
-		
+		if(!philosophers)
+			return(free_philisophers(philosophers), 1);
 	}
+	free_philisophers(philosophers);
+	free_data(data);
 	print_instructions;
-	
 }
