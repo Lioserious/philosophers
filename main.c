@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/22 14:36:30 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/22 14:49:43 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,18 @@ void free_data(t_data *data)
 			i++;
 		}
 		free(data->forks);
+		data->forks = NULL;
 	}
 	pthread_mutex_destroy(&data->write_mutex);
 	pthread_mutex_destroy(&data->dead_mutex);
+	memset(data, 0, sizeof(t_data));
 	free(data);
 }
 void free_philisophers(t_philosophers *philosophers)
 {
 	if(!philosophers)
 		return;
+	memset(philosophers, 0, sizeof(philosophers));
 	free(philosophers);
 }
 
