@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:18:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/22 17:52:53 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/22 18:18:22 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,29 +90,62 @@ void	*philosopher_routine(void *arg)
 		pthread_mutex_unlock(&data->dead_mutex);
 		print_status(philosophers, "is thinking");
 		usleep(data->time_to_think * 1000);
-		if(philosophers->id % 2 == 0)
+		if (philosophers->id % 2 == 0)
 		{
-
+			pthread_mutex_lock(&data->forks[philosophers->le_fork_index]);
+			print_status(philosophers, "has taken le fork");
+			pthread_mutex_lock(&data->forks[philosophers->re_fork_index]);
+			print_status(philosophers, "has taken re fork");
 		}
-		
+		else
+		{
+			pthread_mutex_lock(&data->forks[philosophers->re_fork_index]);
+			print_status(philosophers, "has taken re fork");
+			pthread_mutex_lock(&data->forks[philosophers->le_fork_index]);
+			print_status(philosophers, "has taken le fork");
+		}
+		print_status(philosophers, "is eating");
+		philosophers->last_meal = get_current_time();
+		usleep(data->time_to_eat * 1000);
+		philosophers->meals_eaten++;
+		pthread_mutex_unlock(&data->forks[philosophers->le_fork_index]);
+		pthread_mutex_unlock(&data->forks[philosophers->re_fork_index]);
+		print_status(philosophers, "is sleeping");
+		usleep(data->time_to_sleep * 1000);
 	}
+	return (NULL);
 }
 
 void	print_status(t_philosophers *philo, char *status)
 {
-	t_data *data = philo->data;
-	int simulation_running;
+	t_data	*data;
+	long	current_time;
+	long	elapsed_time;
 
+	data = philo->data;
 	pthread_mutex_lock(&data->write_mutex);
 	pthread_mutex_lock(&data->dead_mutex);
 	pthread_mutex_unlock(&data->dead_mutex);
-
 	if (!data->is_dead)
 	{
-		long current_time = get_current_time();
-		long elapsed_time = current_time - data->start_time;
-
+		current_time = get_current_time();
+		elapsed_time = current_time - data->start_time;
 		printf("%ld %d %s\n", elapsed_time, philo->id + 1, status);
 	}
 	pthread_mutex_unlock(&data->write_mutex);
+}
+
+void	*ft_memset(void *ptr, int value, size_t nbr)
+{
+	unsigned char *p;
+	size_t i;
+
+	p = (unsigned char *)ptr;
+	i = 0;
+	while (i < nbr)
+	{
+		p[i] = (unsigned char)value;
+		i++;
+	}
+	return (ptr);
 }
