@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:18:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/23 16:16:47 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/23 16:36:35 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ t_data	*init_data(int argc, char **argv)
 	while (i < data->nbr_philosophers)
 		pthread_mutex_init(&data->forks[i++], NULL);
 	pthread_mutex_init(&data->write_mutex, NULL);
-	pthread_mutex_init(&data->dead_mutex, NULL);
-	return (data);
+	return (pthread_mutex_init(&data->dead_mutex, NULL) ,data);
 }
 t_philosophers	*init_philosophers(t_data *data)
 {
