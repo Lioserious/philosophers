@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:26:14 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/23 16:17:53 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/23 17:32:43 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ void	*philosopher_routine(void *arg)
 		usleep(1000);
 	while (1)
 	{
+		pthread_mutex_lock(&data->dead_mutex);
 		if (data->is_dead)
 		{
-			pthread_mutex_lock(&data->dead_mutex);
+			pthread_mutex_unlock(&data->dead_mutex);
 			break ;
 		}
 		pthread_mutex_unlock(&data->dead_mutex);
