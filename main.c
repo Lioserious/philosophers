@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/22 18:18:12 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/23 16:35:29 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
         free_data(data);
         return 1;
     }
-    free_philosophers(philosophers);  // Note: corrected spelling from free_philisophers
+    free_philosophers(philosophers);
     free_data(data);
     return 0;
 }

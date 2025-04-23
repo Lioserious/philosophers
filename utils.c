@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:18:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/23 16:36:35 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/04/23 17:31:33 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_data	*init_data(int argc, char **argv)
 	i = 0;
 	data = malloc(sizeof(t_data));
 	if (!data)
-		NULL;
+		return (NULL);
 	data->nbr_philosophers = atoi(argv[1]);
 	data->time_to_die = atoi(argv[2]);
 	data->time_to_eat = atoi(argv[3]);
