@@ -1,34 +1,22 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#              #
-#    Updated: 2025/04/27 16:01:43 by marvin           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 #################### PROJECT CONFIGURATION #####################################
 ################################################################################
 # Compilers and flags
 CC = cc
 CC_FLAGS = -Wall -Werror -Wextra -pthread
 RM = rm -rf
+
 # Targets
-NAME = program
+NAME = philo
 
 ################################################################################
 #################### DIRECTORIES ##############################################
 ################################################################################
 OBJ_DIR = _obj
-INC_DIR = include
 
 ################################################################################
 #################### SOURCE FILES #############################################
 ################################################################################
-SRC_FILES = main.c utils.c routine.c utils_sec.c monitor.c
+SRC_FILES = main.c utils.c routine.c monitor.c
 
 ################################################################################
 #################### OBJECT FILES ############################################
@@ -38,7 +26,7 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:%.c=%.o))
 ################################################################################
 #################### COMPILATION FLAGS ######################################
 ################################################################################
-CFLAGS := $(CC_FLAGS) -g -MMD -MP -I$(INC_DIR)
+CFLAGS := $(CC_FLAGS) -g -MMD -MP
 
 # OS-specific configuration
 UNAME := $(shell uname)
@@ -53,6 +41,7 @@ endif
 ################################################################################
 #################### RULES ###################################################
 ################################################################################
+
 # Default target
 all: $(OBJ_DIR) $(NAME)
 
@@ -66,17 +55,18 @@ $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	@echo "\033[0;32mCompiling $<...\033[0m"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-# Rule to create the executables
+# Rule to create the executable
 $(NAME): $(OBJS)
 	@echo "\033[0;32mCompiling $(NAME)...\033[0m"
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
 	@echo "\033[0;32mSuccessful Compilation of $(NAME)\033[0m"
 
-# Clean up object files and executables
+# Clean up object files
 clean:
 	@echo "\033[0;32mCleaning object files...\033[0m"
 	@$(RM) $(OBJ_DIR)
 
+# Clean up object files and executable
 fclean: clean
 	@echo "\033[0;32mRemoving executable...\033[0m"
 	@$(RM) $(NAME)
