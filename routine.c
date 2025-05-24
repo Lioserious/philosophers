@@ -6,77 +6,63 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:26:14 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 12:49:48 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 13:29:11 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/**
+ * Releases both forks after eating is complete.
+ * Forks are released in the same order regardless of acquisition order.
+ */
+static void release_forks(t_philosophers *philo)
+{
+    t_data *data;
+    
+    data = philo->data;
+    pthread_mutex_unlock(&data->forks[philo->le_fork_index]);
+    pthread_mutex_unlock(&data->forks[philo->re_fork_index]);
+}
+
+/**
+ * Handles the sleeping phase of a philosopher's life cycle.
+ * Prints sleeping status and sleeps for the designated sleeping time.
+ */
+static void sleep_phase(t_philosophers *philo)
+{
+    print_status(philo, "is sleeping");
+    usleep(philo->data->time_to_sleep * 1000);
+}
+
+/**
+ * Main routine executed by each philosopher thread.
+ * Manages the complete lifecycle: thinking -> eating -> sleeping.
+ * Handles special case for single philosopher and implements deadlock prevention.
+ */
 void *philosopher_routine(void *arg)
 {
-    t_philosophers *philosophers;
+    t_philosophers *philo;
     t_data *data;
 
-    philosophers = (t_philosophers *)arg;
-    data = philosophers->data;
-    
-    // Special case for single philosopher - they will starve
+    philo = (t_philosophers *)arg;
+    data = philo->data;
     if (data->nbr_philosophers == 1)
     {
-        print_status(philosophers, "is thinking");
-        usleep(data->time_to_think * 1000);
-        print_status(philosophers, "has taken a fork");
-        // Can't take second fork, so just wait to die
-        usleep(data->time_to_die * 1000 + 1000);
+        handle_single_philosopher(philo);
         return (NULL);
     }
-    
-    if (philosophers->id % 2 == 0)
+    if (philo->id % 2 == 0)
         usleep(1000);
-        
     while (1)
     {
-        pthread_mutex_lock(&data->dead_mutex);
-        if (data->is_dead)
-        {
-            pthread_mutex_unlock(&data->dead_mutex);
-            break ;
-        }
-        pthread_mutex_unlock(&data->dead_mutex);
-        
-        print_status(philosophers, "is thinking");
-        usleep(data->time_to_think * 1000);
-        
-        if (philosophers->id % 2 == 0)
-        {
-            pthread_mutex_lock(&data->forks[philosophers->le_fork_index]);
-            print_status(philosophers, "has taken a fork");
-            pthread_mutex_lock(&data->forks[philosophers->re_fork_index]);
-            print_status(philosophers, "has taken a fork");
-        }
-        else
-        {
-            pthread_mutex_lock(&data->forks[philosophers->re_fork_index]);
-            print_status(philosophers, "has taken a fork");
-            pthread_mutex_lock(&data->forks[philosophers->le_fork_index]);
-            print_status(philosophers, "has taken a fork");
-        }
-        
-        print_status(philosophers, "is eating");
-        pthread_mutex_lock(&data->dead_mutex);
-        philosophers->last_meal = get_current_time();
-        pthread_mutex_unlock(&data->dead_mutex);
-        usleep(data->time_to_eat * 1000);
-        
-        pthread_mutex_lock(&data->dead_mutex);
-        philosophers->meals_eaten++;
-        pthread_mutex_unlock(&data->dead_mutex);
-        
-        pthread_mutex_unlock(&data->forks[philosophers->le_fork_index]);
-        pthread_mutex_unlock(&data->forks[philosophers->re_fork_index]);
-        
-        print_status(philosophers, "is sleeping");
-        usleep(data->time_to_sleep * 1000);
+        if (should_stop_simulation(data))
+            break;
+        think_phase(philo);
+        acquire_forks(philo);
+        eat_phase(philo);
+        release_forks(philo);
+        sleep_phase(philo);
     }
     return (NULL);
 }
