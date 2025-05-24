@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 13:27:47 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 13:29:40 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 13:32:45 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,3 @@ void eat_phase(t_philosophers *philo)
     philo->meals_eaten++;
     pthread_mutex_unlock(&data->dead_mutex);
 }
-
