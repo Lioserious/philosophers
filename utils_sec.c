@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:17:37 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 13:47:13 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 13:53:23 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,27 @@ void	free_philosophers(t_philosophers *philosophers)
 		return ;
 	ft_memset(philosophers, 0, sizeof(philosophers));
 	free(philosophers);
+}
+
+/**
+ * Counts how many philosophers have eaten the required number of meals.
+ * Thread-safe iteration through all philosophers checking their meal count.
+ * Returns the number of philosophers who have completed their meals.
+ */
+int	count_satisfied_philosophers(t_philosophers *philosophers, t_data *data)
+{
+	int	i;
+	int	satisfied_count;
+
+	i = 0;
+	satisfied_count = 0;
+	while (i < data->nbr_philosophers)
+	{
+		pthread_mutex_lock(&data->dead_mutex);
+		if (philosophers[i].meals_eaten >= data->forced_to_eat)
+			satisfied_count++;
+		pthread_mutex_unlock(&data->dead_mutex);
+		i++;
+	}
+	return (satisfied_count);
 }
