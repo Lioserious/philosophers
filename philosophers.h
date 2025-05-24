@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 12:28:56 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 13:21:24 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,9 @@ typedef struct s_data
 	long			start_time;
 	int				is_dead;
 	
-	pthread_mutex_t *forks;          // Array von Gabeln (Mutexe)
-    pthread_mutex_t write_mutex;     // Mutex für Ausgaben auf die Konsole
-    pthread_mutex_t dead_mutex;      // Mutex für den Zugriff auf is_dead
-
+	pthread_mutex_t *forks;
+    pthread_mutex_t write_mutex;
+    pthread_mutex_t dead_mutex;
 }				t_data;
 
 t_data *init_data(int argc, char **argv);
@@ -51,5 +50,5 @@ long get_current_time(void);
 void	print_status(t_philosophers *philo, char *status);
 void	*ft_memset(void *ptr, int value, size_t nbr);
 void	*philosopher_routine(void *arg);
-void *monitor_routine(void *arg);  // Add this declaration
+void *monitor_routine(void *arg);
 
