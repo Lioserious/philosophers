@@ -6,103 +6,115 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 12:28:38 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 13:47:04 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void print_instructions()
+/**
+ * Creates all philosopher threads and starts their execution.
+ * Returns 0 on success, 1 on failure with error cleanup.
+ */
+static int	create_philosopher_threads(t_philosophers *philosophers,
+		t_data *data)
 {
-	printf("The Programm takes the arguments in the following Order\n");
-	printf("programm [Number of Philosophers] [time to die] [time to eat]");
-	printf(" [time to sleep] Optional:[meals he has to eat]\n");
-}
-void free_data(t_data *data)
-{
-	int i;
-	if(!data)
-		return;
-	if(data->forks)
+	int	i;
+
+	i = 0;
+	while (i < data->nbr_philosophers)
 	{
-		i = 0;
-		while(i < data->nbr_philosophers)
+		if (pthread_create(&philosophers[i].thread, NULL, philosopher_routine,
+				&philosophers[i]) != 0)
 		{
-			pthread_mutex_destroy(&data->forks[i]);
-			i++;
+			printf("Error creating thread for philosopher %d\n", i);
+			free_philosophers(philosophers);
+			free_data(data);
+			return (1);
 		}
-		free(data->forks);
-		data->forks = NULL;
+		i++;
 	}
-	pthread_mutex_destroy(&data->write_mutex);
-	pthread_mutex_destroy(&data->dead_mutex);
-	ft_memset(data, 0, sizeof(t_data));
-	free(data);
-}
-void free_philosophers(t_philosophers *philosophers)
-{
-	if(!philosophers)
-		return;
-	ft_memset(philosophers, 0, sizeof(philosophers));
-	free(philosophers);
+	return (0);
 }
 
-int main(int argc, char* argv[])
+/**
+ * Creates the monitor thread that oversees all philosophers.
+ * Returns 0 on success, 1 on failure with error cleanup.
+ */
+static int	create_monitor_thread(pthread_t *monitor_thread,
+		t_philosophers *philosophers, t_data *data)
 {
-    t_data *data;
-    t_philosophers *philosophers;
-    pthread_t monitor_thread;
-    int i;
-    
-    data = NULL;
-    philosophers = NULL;
-    if(argc < 5 || argc > 6)
-        return (print_instructions(), 1);
-    
-    data = init_data(argc, argv);
-    if(!data)
-        return 1;      
-    
-    philosophers = init_philosophers(data);
-    if(!philosophers)
-    {
-        free_data(data);
-        return 1;
-    }
-    
-    // Create philosopher threads
-    i = 0;
-    while (i < data->nbr_philosophers)
-    {
-        if (pthread_create(&philosophers[i].thread, NULL, philosopher_routine, &philosophers[i]) != 0)
-        {
-            printf("Error creating thread for philosopher %d\n", i);
-            free_philosophers(philosophers);
-            free_data(data);
-            return 1;
-        }
-        i++;
-    }
-    
-    // Create monitor thread
-    if (pthread_create(&monitor_thread, NULL, monitor_routine, philosophers) != 0)
-    {
-        printf("Error creating monitor thread\n");
-        free_philosophers(philosophers);
-        free_data(data);
-        return 1;
-    }
-    
-    // Wait for all threads to finish
-    i = 0;
-    while (i < data->nbr_philosophers)
-    {
-        pthread_join(philosophers[i].thread, NULL);
-        i++;
-    }
-    pthread_join(monitor_thread, NULL);
-    
-    free_philosophers(philosophers);
-    free_data(data);
-    return 0;
+	if (pthread_create(monitor_thread, NULL, monitor_routine,
+			philosophers) != 0)
+	{
+		printf("Error creating monitor thread\n");
+		free_philosophers(philosophers);
+		free_data(data);
+		return (1);
+	}
+	return (0);
+}
+
+/**
+ * Waits for all philosopher threads and the monitor thread to complete.
+ * Ensures proper thread synchronization before program termination.
+ */
+static void	wait_for_all_threads(t_philosophers *philosophers,
+		pthread_t monitor_thread, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->nbr_philosophers)
+	{
+		pthread_join(philosophers[i].thread, NULL);
+		i++;
+	}
+	pthread_join(monitor_thread, NULL);
+}
+
+/**
+ * Initializes program data and philosophers based on command line arguments.
+ * Returns 0 on success, 1 on failure with proper cleanup.
+ */
+static int	initialize_simulation(int argc, char **argv, t_data **data,
+		t_philosophers **philosophers)
+{
+	*data = init_data(argc, argv);
+	if (!*data)
+		return (1);
+	*philosophers = init_philosophers(*data);
+	if (!*philosophers)
+	{
+		free_data(*data);
+		return (1);
+	}
+	return (0);
+}
+
+/**
+ * Main entry point of the dining philosophers simulation.
+ * Validates arguments, initializes simulation, creates threads,
+	and manages cleanup.
+ */
+int	main(int argc, char *argv[])
+{
+	t_data			*data;
+	t_philosophers	*philosophers;
+	pthread_t		monitor_thread;
+
+	data = NULL;
+	philosophers = NULL;
+	if (argc < 5 || argc > 6)
+		return (print_instructions(), 1);
+	if (initialize_simulation(argc, argv, &data, &philosophers) != 0)
+		return (1);
+	if (create_philosopher_threads(philosophers, data) != 0)
+		return (1);
+	if (create_monitor_thread(&monitor_thread, philosophers, data) != 0)
+		return (1);
+	wait_for_all_threads(philosophers, monitor_thread, data);
+	free_philosophers(philosophers);
+	free_data(data);
+	return (0);
 }

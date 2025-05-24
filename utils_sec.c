@@ -6,28 +6,29 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:17:37 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 13:44:35 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 13:47:13 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void print_instructions()
+void	print_instructions(void)
 {
 	printf("The Programm takes the arguments in the following Order\n");
 	printf("programm [Number of Philosophers] [time to die] [time to eat]");
 	printf(" [time to sleep] Optional:[meals he has to eat]\n");
 }
 
-void free_data(t_data *data)
+void	free_data(t_data *data)
 {
-	int i;
-	if(!data)
-		return;
-	if(data->forks)
+	int	i;
+
+	if (!data)
+		return ;
+	if (data->forks)
 	{
 		i = 0;
-		while(i < data->nbr_philosophers)
+		while (i < data->nbr_philosophers)
 		{
 			pthread_mutex_destroy(&data->forks[i]);
 			i++;
@@ -41,10 +42,10 @@ void free_data(t_data *data)
 	free(data);
 }
 
-void free_philosophers(t_philosophers *philosophers)
+void	free_philosophers(t_philosophers *philosophers)
 {
-	if(!philosophers)
-		return;
+	if (!philosophers)
+		return ;
 	ft_memset(philosophers, 0, sizeof(philosophers));
 	free(philosophers);
 }
