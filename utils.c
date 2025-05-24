@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:18:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/23 17:31:33 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 12:21:28 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ void	print_status(t_philosophers *philo, char *status)
 	data = philo->data;
 	pthread_mutex_lock(&data->write_mutex);
 	pthread_mutex_lock(&data->dead_mutex);
-	pthread_mutex_unlock(&data->dead_mutex);
 	if (!data->is_dead)
 	{
 		current_time = get_current_time();
 		elapsed_time = current_time - data->start_time;
 		printf("%ld %d %s\n", elapsed_time, philo->id + 1, status);
 	}
+	pthread_mutex_unlock(&data->dead_mutex);
 	pthread_mutex_unlock(&data->write_mutex);
 }
 
