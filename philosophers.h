@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 13:21:24 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 13:33:12 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@ typedef struct s_data
     pthread_mutex_t write_mutex;
     pthread_mutex_t dead_mutex;
 }				t_data;
+
+//Routine helper Functions
+void handle_single_philosopher(t_philosophers *philo);
+int should_stop_simulation(t_data *data);
+void think_phase(t_philosophers *philo);
+void acquire_forks(t_philosophers *philo);
+void eat_phase(t_philosophers *philo);
 
 t_data *init_data(int argc, char **argv);
 t_philosophers *init_philosophers(t_data *data);
