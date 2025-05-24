@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/23 17:23:34 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 12:28:56 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,5 @@ long get_current_time(void);
 void	print_status(t_philosophers *philo, char *status);
 void	*ft_memset(void *ptr, int value, size_t nbr);
 void	*philosopher_routine(void *arg);
+void *monitor_routine(void *arg);  // Add this declaration
 

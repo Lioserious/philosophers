@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:26:14 by lihrig            #+#    #+#             */
-/*   Updated: 2025/04/23 17:32:43 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 12:29:51 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ void	*philosopher_routine(void *arg)
 			print_status(philosophers, "has taken le fork");
 		}
 		print_status(philosophers, "is eating");
+		pthread_mutex_lock(&data->dead_mutex);
 		philosophers->last_meal = get_current_time();
+		pthread_mutex_unlock(&data->dead_mutex);
 		usleep(data->time_to_eat * 1000);
 		philosophers->meals_eaten++;
 		pthread_mutex_unlock(&data->forks[philosophers->le_fork_index]);
