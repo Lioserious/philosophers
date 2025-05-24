@@ -6,40 +6,11 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:18:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 13:47:14 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 14:03:44 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-t_data	*init_data(int argc, char **argv)
-{
-	t_data	*data;
-	int		i;
-
-	i = 0;
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (NULL);
-	data->nbr_philosophers = atoi(argv[1]);
-	data->time_to_die = atoi(argv[2]);
-	data->time_to_eat = atoi(argv[3]);
-	data->time_to_sleep = atoi(argv[4]);
-	data->time_to_think = 100;
-	if (argc == 6)
-		data->forced_to_eat = atoi(argv[5]);
-	else
-		data->forced_to_eat = 0;
-	data->is_dead = 0;
-	data->start_time = get_current_time();
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->nbr_philosophers);
-	if (!data->forks)
-		return (NULL);
-	while (i < data->nbr_philosophers)
-		pthread_mutex_init(&data->forks[i++], NULL);
-	pthread_mutex_init(&data->write_mutex, NULL);
-	return (pthread_mutex_init(&data->dead_mutex, NULL), data);
-}
 
 t_philosophers	*init_philosophers(t_data *data)
 {
