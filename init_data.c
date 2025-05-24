@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 14:03:22 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 14:03:55 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 15:40:04 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 /**
  * Calculates the optimal thinking time based on eating and sleeping times.
- * Returns a thinking time that prevents philosophers from competing too aggressively.
+* Returns a thinking time that prevents philosophers from competing too
+ aggressively.
  */
 static int	calculate_think_time(int time_to_eat, int time_to_sleep)
 {
@@ -34,8 +35,8 @@ static void	init_timing_data(t_data *data, int argc, char **argv)
 	data->time_to_die = atoi(argv[2]);
 	data->time_to_eat = atoi(argv[3]);
 	data->time_to_sleep = atoi(argv[4]);
-	data->time_to_think = calculate_think_time(data->time_to_eat, 
-		data->time_to_sleep);
+	data->time_to_think = calculate_think_time(data->time_to_eat,
+			data->time_to_sleep);
 	if (argc == 6)
 		data->forced_to_eat = atoi(argv[5]);
 	else

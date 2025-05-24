@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 13:53:38 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/24 15:39:38 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ typedef struct s_data
 	pthread_mutex_t	dead_mutex;
 }					t_data;
 
-int	count_satisfied_philosophers(t_philosophers *philosophers, t_data *data);
+int					count_satisfied_philosophers(t_philosophers *philosophers,
+						t_data *data);
 // Routine helper Functions
 void				handle_single_philosopher(t_philosophers *philo);
 int					should_stop_simulation(t_data *data);
