@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 14:03:22 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 15:40:04 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/31 17:01:57 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 static int	calculate_think_time(int time_to_eat, int time_to_sleep)
 {
 	if (time_to_eat >= time_to_sleep)
-		return ((time_to_eat - time_to_sleep) + 1);
+		return ((time_to_eat - time_to_sleep) + 10);
 	else
-		return (1);
+		return (10);
 }
 
 /**

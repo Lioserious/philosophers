@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:26:14 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 13:50:52 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/31 16:45:04 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static void	sleep_phase(t_philosophers *philo)
 /**
  * Main routine executed by each philosopher thread.
  * Manages the complete lifecycle: thinking -> eating -> sleeping.
-* Handles special case for single philosopher and implements deadlock prevention.
+* Handles special case for single philosopher and implements deadlock
+ prevention.
  */
 void	*philosopher_routine(void *arg)
 {
@@ -48,18 +49,15 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philosophers *)arg;
 	data = philo->data;
 	if (data->nbr_philosophers == 1)
-	{
-		handle_single_philosopher(philo);
-		return (NULL);
-	}
+		return (handle_single_philosopher(philo), NULL);
 	if (philo->id % 2 == 0)
-		usleep(1000);
-	while (1)
+		usleep(data->time_to_eat * 500);
+	while (!should_stop_simulation(data))
 	{
-		if (should_stop_simulation(data))
-			break ;
 		think_phase(philo);
 		acquire_forks(philo);
+		if (should_stop_simulation(data))
+			return (release_forks(philo), NULL);
 		eat_phase(philo);
 		release_forks(philo);
 		sleep_phase(philo);

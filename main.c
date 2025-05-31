@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/31 16:03:53 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/31 17:02:21 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	main(int argc, char *argv[])
 
 	data = NULL;
 	philosophers = NULL;
-	if (!validate_arguments(argc,argv))
+	if (!validate_arguments(argc, argv))
 		return (print_instructions(), 1);
 	if (initialize_simulation(argc, argv, &data, &philosophers) != 0)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 13:27:47 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 13:47:10 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/31 17:01:48 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	should_stop_simulation(t_data *data)
 void	think_phase(t_philosophers *philo)
 {
 	print_status(philo, "is thinking");
-	usleep(philo->data->time_to_think * 1000);
+	if (philo->data->time_to_think > 0)
+		usleep(philo->data->time_to_think * 1000);
 }
 
 /**
