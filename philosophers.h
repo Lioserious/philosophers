@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 15:39:38 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/31 16:00:02 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,3 +64,4 @@ void				print_status(t_philosophers *philo, char *status);
 void				*ft_memset(void *ptr, int value, size_t nbr);
 void				*philosopher_routine(void *arg);
 void				*monitor_routine(void *arg);
+int 				validate_arguments(int argc, char **argv);

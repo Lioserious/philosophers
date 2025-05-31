@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:17:37 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 13:53:23 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:59:22 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,17 @@ int	count_satisfied_philosophers(t_philosophers *philosophers, t_data *data)
 		i++;
 	}
 	return (satisfied_count);
+}
+
+int validate_arguments(int argc, char **argv)
+{
+    if (argc < 5 || argc > 6)
+        return (0);
+    if (atoi(argv[1]) <= 0 || atoi(argv[2]) <= 0 || atoi(argv[3]) <= 0 || atoi(argv[4]) <= 0)
+        return ( printf("Error: All arguments must be positive integers\n"), 0);
+    if (argc == 6 && atoi(argv[5]) <= 0)
+        return (printf("Error: All arguments must be positive integers\n"),0);
+    if (atoi(argv[1]) > 200)
+        return (printf("Error: Too many philosophers (max 200)\n"), 0);
+    return (1);
 }
