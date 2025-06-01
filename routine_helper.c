@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 13:27:47 by lihrig            #+#    #+#             */
-/*   Updated: 2025/06/01 14:37:01 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 15:39:11 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ int	should_stop_simulation(t_data *data)
  */
 void	think_phase(t_philosophers *philo)
 {
+	int		think_time;
 	long	time_since_meal;
 	long	time_until_death;
-	int		think_time;
 
+	print_status(philo, "is thinking");
 	pthread_mutex_lock(&philo->data->dead_mutex);
 	time_since_meal = get_current_time() - philo->last_meal;
 	pthread_mutex_unlock(&philo->data->dead_mutex);
@@ -61,9 +62,8 @@ void	think_phase(t_philosophers *philo)
 		think_time = 1;
 	else if (time_until_death < (philo->data->time_to_eat + 100))
 		think_time = think_time / 2;
-	print_status(philo, "is thinking");
 	if (think_time > 0)
-		usleep(think_time * 1000);
+		precise_usleep(think_time * 1000);
 }
 
 /**
@@ -71,25 +71,26 @@ void	think_phase(t_philosophers *philo)
  * Uses different fork acquisition order based on philosopher ID
  * to prevent deadlock situations.
  */
-void	acquire_forks(t_philosophers *philo)
+void acquire_forks(t_philosophers *philo)
 {
-	t_data	*data;
-
-	data = philo->data;
-	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_lock(&data->forks[philo->le_fork_index]);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(&data->forks[philo->re_fork_index]);
-		print_status(philo, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(&data->forks[philo->re_fork_index]);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(&data->forks[philo->le_fork_index]);
-		print_status(philo, "has taken a fork");
-	}
+    t_data *data = philo->data;
+    int first_fork;
+	int second_fork;
+    
+    if (philo->le_fork_index < philo->re_fork_index)
+    {
+        first_fork = philo->le_fork_index;
+        second_fork = philo->re_fork_index;
+    }
+    else
+    {
+        first_fork = philo->re_fork_index;
+        second_fork = philo->le_fork_index;
+    }
+    pthread_mutex_lock(&data->forks[first_fork]);
+    print_status(philo, "has taken a fork");
+    pthread_mutex_lock(&data->forks[second_fork]);
+    print_status(philo, "has taken a fork");
 }
 
 /**

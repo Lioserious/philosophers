@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:18:06 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/24 15:50:42 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 15:33:51 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,14 @@ void	print_status(t_philosophers *philo, char *status)
 
 	data = philo->data;
 	pthread_mutex_lock(&data->dead_mutex);
+	if (data->is_dead)
+	{
+		pthread_mutex_unlock(&data->dead_mutex);
+		return ;
+	}
+	pthread_mutex_unlock(&data->dead_mutex);
 	pthread_mutex_lock(&data->write_mutex);
+	pthread_mutex_lock(&data->dead_mutex);
 	if (!data->is_dead)
 	{
 		current_time = get_current_time();

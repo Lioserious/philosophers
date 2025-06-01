@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:26:14 by lihrig            #+#    #+#             */
-/*   Updated: 2025/06/01 15:10:18 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 15:31:36 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ static void	release_forks(t_philosophers *philo)
  * Handles the sleeping phase of a philosopher's life cycle.
  * Prints sleeping status and sleeps for the designated sleeping time.
  */
-// static void	sleep_phase(t_philosophers *philo)
-// {
-// 	print_status(philo, "is sleeping");
-// 	usleep(philo->data->time_to_sleep * 1000);
-// }
+static void	sleep_phase(t_philosophers *philo)
+{
+	print_status(philo, "is sleeping");
+	precise_usleep(philo->data->time_to_sleep * 1000);
+}
 
 void	precise_usleep(long microseconds)
 {
@@ -79,7 +79,7 @@ void	*philosopher_routine(void *arg)
 			return (release_forks(philo), NULL);
 		eat_phase(philo);
 		release_forks(philo);
-		precise_usleep(philo->data->time_to_sleep);
+		sleep_phase(philo);
 	}
 	return (NULL);
 }
