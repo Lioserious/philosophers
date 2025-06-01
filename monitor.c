@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:38:41 by lihrig            #+#    #+#             */
-/*   Updated: 2025/06/01 14:10:14 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:27:19 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,24 +86,31 @@ int	check_if_all_ate_enough(t_philosophers *philosophers)
 	return (0);
 }
 
-void	*monitor_routine(void *arg)
+void *monitor_routine(void *arg)
 {
-	t_philosophers	*philosophers;
-	int				i;
+    t_philosophers *philosophers;
+    int i;
+    int check_interval;
 
-	philosophers = (t_philosophers *)arg;
-	while (1)
-	{
-		i = 0;
-		while (i < philosophers[0].data->nbr_philosophers)
-		{
-			if (check_if_philosopher_died(philosophers, i))
-				return (NULL);
-			i++;
-		}
-		if (check_if_all_ate_enough(philosophers))
-			return (NULL);
-		usleep(50);
-	}
-	return (NULL);
+    philosophers = (t_philosophers *)arg;
+    if (philosophers[0].data->time_to_die < 500)
+        check_interval = 1;
+    else if (philosophers[0].data->time_to_die < 1000)
+        check_interval = 5;
+    else
+        check_interval = 10;
+    while (1)
+    {
+        i = 0;
+        while (i < philosophers[0].data->nbr_philosophers)
+        {
+            if (check_if_philosopher_died(philosophers, i))
+                return (NULL);
+            i++;
+        }
+        if (check_if_all_ate_enough(philosophers))
+            return (NULL);
+        usleep(check_interval * 1000);
+    }
+    return (NULL);
 }
