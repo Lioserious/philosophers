@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:17:37 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/31 17:01:25 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 13:40:22 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,6 @@ int	validate_arguments(int argc, char **argv)
 	if (argc == 6 && atoi(argv[5]) <= 0)
 		return (printf("Error: All arguments must be positive integers\n"), 0);
 	if (atoi(argv[1]) > 200)
-		return (printf("Error: Too many philosophers (max 200)\n"), 0);
+		printf("TOO MANY PHILOSOPHERS\n");
 	return (1);
 }

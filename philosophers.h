@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:03:25 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/31 17:02:07 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:02:40 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,3 +65,4 @@ void				*ft_memset(void *ptr, int value, size_t nbr);
 void				*philosopher_routine(void *arg);
 void				*monitor_routine(void *arg);
 int					validate_arguments(int argc, char **argv);
+void				precise_usleep(long microseconds);

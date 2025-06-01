@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:26:14 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/31 16:45:04 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 15:10:18 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,29 @@ static void	release_forks(t_philosophers *philo)
  * Handles the sleeping phase of a philosopher's life cycle.
  * Prints sleeping status and sleeps for the designated sleeping time.
  */
-static void	sleep_phase(t_philosophers *philo)
+// static void	sleep_phase(t_philosophers *philo)
+// {
+// 	print_status(philo, "is sleeping");
+// 	usleep(philo->data->time_to_sleep * 1000);
+// }
+
+void	precise_usleep(long microseconds)
 {
-	print_status(philo, "is sleeping");
-	usleep(philo->data->time_to_sleep * 1000);
+	long	start_time;
+	long	current_time;
+
+	start_time = get_current_time() * 1000;
+	if (microseconds > 1000)
+	{
+		usleep(microseconds - 500);
+		microseconds = 500;
+	}
+	current_time = get_current_time() * 1000;
+	while (current_time - start_time < microseconds)
+	{
+		usleep(10);
+		current_time = get_current_time() * 1000;
+	}
 }
 
 /**
@@ -51,7 +70,7 @@ void	*philosopher_routine(void *arg)
 	if (data->nbr_philosophers == 1)
 		return (handle_single_philosopher(philo), NULL);
 	if (philo->id % 2 == 0)
-		usleep(data->time_to_eat * 500);
+		usleep((data->time_to_eat * 1000) / 2);
 	while (!should_stop_simulation(data))
 	{
 		think_phase(philo);
@@ -60,7 +79,7 @@ void	*philosopher_routine(void *arg)
 			return (release_forks(philo), NULL);
 		eat_phase(philo);
 		release_forks(philo);
-		sleep_phase(philo);
+		precise_usleep(philo->data->time_to_sleep);
 	}
 	return (NULL);
 }

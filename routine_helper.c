@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 13:27:47 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/31 17:01:48 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:37:01 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,22 @@ int	should_stop_simulation(t_data *data)
  */
 void	think_phase(t_philosophers *philo)
 {
+	long	time_since_meal;
+	long	time_until_death;
+	int		think_time;
+
+	pthread_mutex_lock(&philo->data->dead_mutex);
+	time_since_meal = get_current_time() - philo->last_meal;
+	pthread_mutex_unlock(&philo->data->dead_mutex);
+	time_until_death = philo->data->time_to_die - time_since_meal;
+	think_time = philo->data->time_to_think;
+	if (time_until_death < (philo->data->time_to_eat + 50))
+		think_time = 1;
+	else if (time_until_death < (philo->data->time_to_eat + 100))
+		think_time = think_time / 2;
 	print_status(philo, "is thinking");
-	if (philo->data->time_to_think > 0)
-		usleep(philo->data->time_to_think * 1000);
+	if (think_time > 0)
+		usleep(think_time * 1000);
 }
 
 /**
@@ -93,7 +106,7 @@ void	eat_phase(t_philosophers *philo)
 	pthread_mutex_lock(&data->dead_mutex);
 	philo->last_meal = get_current_time();
 	pthread_mutex_unlock(&data->dead_mutex);
-	usleep(data->time_to_eat * 1000);
+	precise_usleep(data->time_to_eat * 1000);
 	pthread_mutex_lock(&data->dead_mutex);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&data->dead_mutex);
