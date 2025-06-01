@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:38:41 by lihrig            #+#    #+#             */
-/*   Updated: 2025/05/29 16:54:35 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 13:52:56 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,20 @@ int	check_if_philosopher_died(t_philosophers *philosophers, int index)
 	t_data	*data;
 	long	current_time;
 	long	elapsed_time;
+	long	time_since_meal;
 
 	data = philosophers[0].data;
 	pthread_mutex_lock(&data->dead_mutex);
-	if ((get_current_time()
-			- philosophers[index].last_meal) > data->time_to_die)
+	current_time = get_current_time();
+	time_since_meal = current_time - philosophers[index].last_meal;
+	if (time_since_meal > data->time_to_die)
 	{
 		data->is_dead = 1;
-		pthread_mutex_lock(&data->write_mutex);
-		current_time = get_current_time();
 		elapsed_time = current_time - data->start_time;
+		pthread_mutex_unlock(&data->dead_mutex);
+		pthread_mutex_lock(&data->write_mutex);
 		printf("%ld %d died\n", elapsed_time, philosophers[index].id + 1);
 		pthread_mutex_unlock(&data->write_mutex);
-		pthread_mutex_unlock(&data->dead_mutex);
 		return (1);
 	}
 	pthread_mutex_unlock(&data->dead_mutex);
