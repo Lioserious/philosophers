@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 13:27:47 by lihrig            #+#    #+#             */
-/*   Updated: 2025/06/01 15:39:11 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 15:42:55 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,26 +71,27 @@ void	think_phase(t_philosophers *philo)
  * Uses different fork acquisition order based on philosopher ID
  * to prevent deadlock situations.
  */
-void acquire_forks(t_philosophers *philo)
+void	acquire_forks(t_philosophers *philo)
 {
-    t_data *data = philo->data;
-    int first_fork;
-	int second_fork;
-    
-    if (philo->le_fork_index < philo->re_fork_index)
-    {
-        first_fork = philo->le_fork_index;
-        second_fork = philo->re_fork_index;
-    }
-    else
-    {
-        first_fork = philo->re_fork_index;
-        second_fork = philo->le_fork_index;
-    }
-    pthread_mutex_lock(&data->forks[first_fork]);
-    print_status(philo, "has taken a fork");
-    pthread_mutex_lock(&data->forks[second_fork]);
-    print_status(philo, "has taken a fork");
+	t_data	*data;
+	int		first_fork;
+	int		second_fork;
+
+	data = philo->data;
+	if (philo->le_fork_index < philo->re_fork_index)
+	{
+		first_fork = philo->le_fork_index;
+		second_fork = philo->re_fork_index;
+	}
+	else
+	{
+		first_fork = philo->re_fork_index;
+		second_fork = philo->le_fork_index;
+	}
+	pthread_mutex_lock(&data->forks[first_fork]);
+	print_status(philo, "has taken a fork");
+	pthread_mutex_lock(&data->forks[second_fork]);
+	print_status(philo, "has taken a fork");
 }
 
 /**
