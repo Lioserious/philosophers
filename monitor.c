@@ -6,7 +6,7 @@
 /*   By: lihrig <lihrig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:38:41 by lihrig            #+#    #+#             */
-/*   Updated: 2025/06/01 13:52:56 by lihrig           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:10:14 by lihrig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	*monitor_routine(void *arg)
 		}
 		if (check_if_all_ate_enough(philosophers))
 			return (NULL);
-		usleep(100);
+		usleep(50);
 	}
 	return (NULL);
 }
